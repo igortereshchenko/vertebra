@@ -1,0 +1,92 @@
+
+mri_image=double(x);
+[m n]=size(mri_image);
+
+boundary_brigthness_optimal=600;
+
+%boundary finder
+
+boundary_index=1;
+
+for i=1:n
+    
+    
+    bundary_is_found=false;
+    
+    for j=1:m
+        
+       
+        if mri_image(i,j)>0
+            
+            if not(bundary_is_found)
+                bundary_is_found=true;
+                j_begin=j;
+            end
+        else
+            if bundary_is_found
+                j_end=j-1;
+                
+                boundary(boundary_index).i_line=i;
+                boundary(boundary_index).j_begin=double(j_begin);
+                boundary(boundary_index).j_end=double(j_end);
+                
+                bundary_is_found=false;
+                boundary_index=boundary_index+1;
+            end
+        end
+        
+    end
+    
+    
+    %close last element
+    if bundary_is_found
+                j_end=m;
+                
+                boundary(boundary_index).i_line=i;
+                boundary(boundary_index).j_begin=double(j_begin);
+                boundary(boundary_index).j_end=double(j_end);
+                
+                bundary_is_found=false;
+                boundary_index=boundary_index+1;
+    end
+    
+end
+
+ test(1:n,1:m)=0;
+% gradient filling
+for i=1:size(boundary,2)
+    
+    image_line=mri_image(boundary(i).i_line, boundary(i).j_begin: boundary(i).j_end);
+    
+    
+    
+    test(boundary(i).i_line, boundary(i).j_begin: boundary(i).j_end)=image_line;
+    
+    
+    image_line_length=length(image_line);
+    
+    boundary_brigthness=min(boundary_brigthness_optimal,min(image_line));
+    
+    
+    if image_line_length>2
+        
+    image_line(1)=boundary_brigthness;
+    image_line(image_line_length)=boundary_brigthness;
+    
+    [max_brigthness, max_index] = max (image_line);
+    
+    
+    
+    x_= [1 max_index image_line_length];
+    y_ = [boundary_brigthness max_brigthness boundary_brigthness];
+    
+    x_interpolation=1:image_line_length;
+    %y_interpolation= interp1(x_,y_,x_interpolation,'spline');
+    temp(image_line_length);
+    temp(:)=1999
+    y_interpolation=temp;
+    
+    mri_image(boundary(i).i_line, boundary(i).j_begin: boundary(i).j_end)=y_interpolation;
+    
+    end
+end
