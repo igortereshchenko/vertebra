@@ -28,7 +28,7 @@ for i=3:count_of_files
     %----------------------------------------------------------------------    
  
     %PSF Sharp
-    PSF_Sharp = fspecial('unsharp',0);
+    PSF_Sharp = fspecial('unsharp',0.5);
     noise_var = 0.0001;
     estimated_nsr = noise_var / var(image_contrast_double(:));
     

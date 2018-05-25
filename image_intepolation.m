@@ -51,7 +51,7 @@ interpolation_step=0.25;
         dicom_info_sorted(i) = dicom_info(indexes_sorted(i));
     end
 
-    mri_interpolated_images = interp3(mri_images_sorted,Xq,Yq,Zq,'cubic');
+    mri_interpolated_images = interp3(double(mri_images_sorted),Xq,Yq,Zq,'cubic');
 
 
     slicelocation_interpolated = linspace(dicom_info_sorted(1).SliceLocation,dicom_info_sorted(count_of_files).SliceLocation,size(mri_interpolated_images,3));

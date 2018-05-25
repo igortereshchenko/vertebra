@@ -46,15 +46,15 @@ for i=1:count_of_files
     
     
     
-    %image_filtered = Ibf(:,:,i);
+    image_filtered = Ibf(:,:,i);
     
+    image_filtered = volume(:,:,i)
     
-    
-    %result = uint16(double(max(max(dicom_image)))* mat2gray(image_filtered,[min(min(image_filtered)) max(max(image_filtered))]));
+    result = uint16(double(max(max(dicom_image)))* mat2gray(image_filtered,[min(min(image_filtered)) max(max(image_filtered))]));
     
        
    
-    result= volume(:,:,i);
+    
     
     dicomwrite(result, strcat(result_pathfiles,'\',dicom_file_list(i+2).name),dicom_info,'CreateMode','Copy'); 
     
